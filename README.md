@@ -30,6 +30,30 @@ python -m vllm_benchmark --base-url http://localhost:8000/v1 --model my-model --
 python -m vllm_benchmark --base-url http://localhost:8000/v1 --model my-model --all --verbose
 ```
 
+## vLLM Server Setup
+
+For models that support both reasoning and tool calling (e.g. Qwen3-VL-8B-Thinking), the `--reasoning-parser` and `--tool-call-parser` flags are critical:
+
+```bash
+vllm serve Qwen/Qwen3-VL-8B-Thinking \
+  --max-model-len 131072 \
+  --host 0.0.0.0 \
+  --port 8000 \
+  --enable-auto-tool-choice \
+  --tool-call-parser hermes \
+  --reasoning-parser deepseek_r1 \
+  --max-num-seqs 10 \
+  --limit-mm-per-prompt.video 0 \
+  --async-scheduling \
+  --tensor-parallel-size 4
+```
+
+Key flags:
+- `--tool-call-parser hermes` — Enables structured tool call parsing (required for function calling)
+- `--reasoning-parser deepseek_r1` — Extracts thinking/reasoning content from the model's response
+- `--enable-auto-tool-choice` — Lets the model decide when to call tools
+- `--tensor-parallel-size 4` — Distributes the model across 4 GPUs
+
 ## Benchmarks
 
 ### Chat (Function Calling)
