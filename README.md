@@ -73,10 +73,12 @@ vllm serve Qwen/Qwen3-VL-8B-Thinking \
   --tensor-parallel-size 4
 ```
 
-### Qwen3.5 (Vision + Reasoning + Tool Calling)
+### Qwen3.5 (Natively Multimodal + Reasoning + Tool Calling)
+
+All Qwen3.5 models are natively multimodal (vision + text) — there is no separate `-VL` variant.
 
 ```bash
-vllm serve Qwen/Qwen3.5-VL-32B-AWQ \
+vllm serve Qwen/Qwen3.5-4B \
   --host 0.0.0.0 \
   --port 8000 \
   --tensor-parallel-size 4 \
